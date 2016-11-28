@@ -1,6 +1,6 @@
 <?php
-namespace \Suppliers;
-use SupplierInterface;
+namespace Suppliers\Suppliers;
+use Suppliers\Suppliers\SuppliersInterface;
 
 class CVA implements SuppliersInterface 
 {
@@ -22,17 +22,44 @@ class CVA implements SuppliersInterface
         if(!empty($this->paramsDefault))
             $params = array_merge($params, $this->paramsDefault);
 
-        $paramsURL = '?'.implode('&', $params);
+        $paramsURL = '?'.$this->implodeUrl($params);
+
+        $this->urlService .= $paramsURL;
     }
 
-    public function getProducts() {
-        
+    public function getProducts(array $params = []) {
+        try {
+            $http = new \GuzzleHttp\Client();
+            $paramsURL = $this->implodeUrl($params);
+            $this->urlService .= $paramsURL;
+
+            $res = $http->request('GET', $this->urlService, [
+                "headers" => [
+                    "Content-Type" => "text/xml"
+                ]
+            ]);
+            
+            $productsCollection = new \Suppliers\Suppliers\Adapters\ProductsAdapter($res->getBody());
+
+            return new \Suppliers\Suppliers\Adapters\ProductsAdapter($res->getBody());
+        } catch(\InvalidArgumentException $ex) {
+            throw new \Exception($ex->getMessage());
+        }
     }
 
     public function Order(){}
+
+
+    private function implodeUrl($paramArray = []) {
+        if(!empty($paramArray)) {
+            $paramStr = "";
+            foreach($paramArray as $param => $value) 
+                $paramStr .= $param."=".$value."&";
+            
+            
+            return $paramStr;
+        }
+
+        return "";
+    }
 }
-
-
-$suppliers = new Suppliers();
-
-$suppliers->cva->getProducts();
