@@ -39,9 +39,9 @@ class CVA implements SuppliersInterface
                 ]
             ]);
             
-            $productsCollection = new \Suppliers\Suppliers\Adapters\ProductsAdapter($res->getBody());
+            $productsCollection = new \Suppliers\Adapters\ProductsAdapter($res->getBody());
 
-            return new \Suppliers\Suppliers\Adapters\ProductsAdapter($res->getBody());
+            return new \Suppliers\Adapters\ProductsAdapter($res->getBody());
         } catch(\InvalidArgumentException $ex) {
             throw new \Exception($ex->getMessage());
         }

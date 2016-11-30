@@ -1,5 +1,5 @@
 <?php
-namespace Suppliers\Suppliers\Adapters;
+namespace Suppliers\Adapters;
 
 class ProductsAdapter
 {
