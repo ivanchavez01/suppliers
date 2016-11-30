@@ -20,6 +20,5 @@
         "branch-alias": {
             "1.0.0": "master"
         }
-    },
-    "minimum-stability": "stable"
+    }
 }
