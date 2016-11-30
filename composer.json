@@ -16,5 +16,11 @@
     "minimum-stability": "dev",
     "require": {
         "guzzlehttp/guzzle": "^6.2"
-    }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "master"
+        }
+    },
+    "minimum-stability": "dev",
 }
