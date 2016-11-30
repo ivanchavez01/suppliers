@@ -13,12 +13,13 @@
             "Suppliers\\" : "src/"
         }
     },
+    "minimum-stability": "dev",
     "require": {
         "guzzlehttp/guzzle": "^6.2"
     },
     "extra": {
         "branch-alias": {
-            "1.0.0": "master"
+            "stable": "1.0.0-dev"
         }
     }
 }
