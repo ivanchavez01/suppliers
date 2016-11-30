@@ -7,10 +7,10 @@ class CVA implements SuppliersInterface
     public $urlService = 'http://www.grupocva.com/catalogo_clientes_xml/lista_precios.xml';
     public $customer   = '38388';
     public $paramsDefault = [
-        "sucursales"    => 1, 
+        "sucursales"    => 1,
         "subgrupo"      => 1, 
         "tc"            => 1, 
-        "depto"         => 1,
+        //"depto"         => 1,
         "promos"        => 1,
         "TipoCompra"    => 1,
         "ModenaPesos"   => 1
@@ -38,8 +38,6 @@ class CVA implements SuppliersInterface
                     "Content-Type" => "text/xml"
                 ]
             ]);
-            
-            $productsCollection = new \Suppliers\Adapters\ProductsAdapter($res->getBody());
 
             return new \Suppliers\Adapters\ProductsAdapter($res->getBody());
         } catch(\InvalidArgumentException $ex) {

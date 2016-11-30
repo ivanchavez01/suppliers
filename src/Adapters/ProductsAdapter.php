@@ -10,33 +10,40 @@ class ProductsAdapter
 
         if(!empty($xmlArray)) {
             foreach($xmlArray as $item) {
+
                 $product = new ProductStruct();
-               
-                $product->key           = (string)$item->clave;
-                $product->code          = (string)$item->codigo_fabricante;
-                $product->desc          = (string)$item->descripcion;
-                $product->group         = (string)$item->grupo;
-                $product->brand         = (string)$item->marca;
-                $product->qty           = (int)$item->disponible;
-                $product->price         = (string)$item->precio;
-                $product->currency      = (string)$item->moneda;
-                $product->image         = (string)$item->imagen;
-                $product->currencyRate  = (string)$item->tipocambio;
+                if ($item->MonedaPrecioDescuento != "Pesos") {
+                    $item->PrecioDescuento = $item->PrecioDescuento * $item->tipocambio;
+                }
 
-                foreach($item as $key => $value) {
-                    if(substr($key, 0, 6) == "VENTAS") {
-                        if((float)$value > 0) {
-                            $product->branches[] = [
-                                "branch" => substr($key, 7, strlen($key)),
-                                "qty"    => (float)$value
-                            ];
+                $product->key = (string)$item->clave;
+                $product->code = (string)$item->codigo_fabricante;
+                $product->desc = (string)$item->descripcion;
+                $product->group = (string)$item->grupo;
+                $product->brand = (string)$item->marca;
+                $product->qty = (int)$item->disponible;
+                $product->offerPrice = (float)$item->PrecioDescuento;
+                $product->price = (string)$item->precio;
+                $product->currency = (string)$item->moneda;
+                $product->image = (string)$item->imagen;
+                $product->currencyRate = (string)$item->tipocambio;
+                $product->warranty = (string)$item->garantia;
+                $product->promotionDescription = (string)$item->DescripcionPromocion;
+                $product->promotionDateEnd = (string)$item->VencimientoPromocion;
 
-                            $product->qty += (float)$value;
-                        }
+                foreach ($item as $key => $value) {
+                    if (substr($key, 0, 6) == "VENTAS") {
+                        $product->branches[] = [
+                            "branch" => substr($key, 7, strlen($key)),
+                            "qty" => (float)$value
+                        ];
+
+                        //$product->qty += (float)$value;
                     }
-                }                
+                }
 
-                $this->productsCollection[]   = $product;
+                $this->productsCollection[] = $product;
+
             }
         }
         
@@ -45,5 +52,21 @@ class ProductsAdapter
 }
 
 class ProductStruct {
-    public $key, $code, $desc, $group, $brand, $qty, $price, $currency, $image, $currencyRate, $branches = [];
+    public
+        $key,
+        $code,
+        $desc,
+        $group,
+        $brand,
+        $supplier_id = 1,
+        $qty,
+        $price,
+        $currency,
+        $offerPrice,
+        $image,
+        $warranty,
+        $promotionDescription,
+        $promotionDateEnd,
+        $currencyRate,
+        $branches = [];
 }
