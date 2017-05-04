@@ -12,7 +12,7 @@ class ProductsAdapter
             foreach($xmlArray as $item) {
 
                 $product = new ProductStruct();
-                if ($item->MonedaPrecioDescuento != "Pesos") {
+                if ($item->moneda != "Pesos") {
                     $item->PrecioDescuento = $item->PrecioDescuento * $item->tipocambio;
                 }
 
@@ -38,11 +38,12 @@ class ProductsAdapter
                             "qty" => (float)$value
                         ];
 
-                        //$product->qty += (float)$value;
+                        $product->quantity_total += (float)$value;
                     }
                 }
-
-                $this->productsCollection[] = $product;
+                
+                if($product->quantity_total > 0 || $product->qty > 0)
+                    $this->productsCollection[] = $product;
 
             }
         }
@@ -65,6 +66,7 @@ class ProductStruct {
         $offerPrice,
         $image,
         $warranty,
+        $quantity_total = 0,
         $promotionDescription,
         $promotionDateEnd,
         $currencyRate,
